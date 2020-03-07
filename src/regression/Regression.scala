@@ -6,7 +6,7 @@ import scala.math._
 class Regression {
   
   
-  def dataHandler(data:Array[Double]) = ???
+  def dataHandler(data:Array[Double]) = 1
   
   
   //Simple linear regression
@@ -81,7 +81,7 @@ class Regression {
   
   def linear (dataX:Array[Double],dataY:Array[Double]):String = {
     
-    "y = " + (slope(dataX,dataY)).toString+ "x +" + yIntersect(dataX,dataY)
+    "y = " + (slope(dataX,dataY)).toString+ "x + " + yIntersect(dataX,dataY)
     
   }
   
@@ -93,7 +93,7 @@ class Regression {
   //Polynomial regression of 2nd degree
   
   
-  def polynomial_2nd = ???
+  def polynomial_2nd = 0
   
     
   

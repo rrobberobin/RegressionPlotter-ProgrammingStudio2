@@ -14,6 +14,8 @@ object Test {
   
   val dataY = dataDoubles.map(_._2)
   
-  def main = println(tester.linear(dataX,dataY))
+  def main (args:Array[String]): Unit = {
+    println(tester.linear(dataX,dataY))
+  }
   
 }
