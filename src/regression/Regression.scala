@@ -8,9 +8,9 @@ import scala.math._
  * Many models use the same components.
  */
 
-class Regression {
+class SimpleRegression {
   
-  def dataHandler(data:Array[Double]) = ???
+  //def dataHandler(data:Array[Double]) = ???
   
   
 /* Here are a lot of methods. No need to go into the specifics of all methods.
@@ -77,10 +77,10 @@ class Regression {
   
   
   
-  //slope formula: slope = (mean(x)-mean(y)) / ((mean(x))^2-mean(x^2))
+  //slope formula: slope = (mean(x)*mean(y)-mean(x*y)) / ((mean(x))^2-mean(x^2))
   def slope (dataX:Array[Double], dataY:Array[Double]) = { 
     
-    val numerator = (mean(dataX)-mean(dataY))
+    val numerator = (mean(dataX)*mean(dataY)-meanXY(dataX,dataY))
     
     val denominator = (mean(dataX)*mean(dataX)-meanOfSquared(dataX))
     
@@ -104,10 +104,11 @@ class Regression {
   //Polynomial regression of 2nd degree
   
   
-  def polynomial_2nd = ???
+  
+  
+  //def polynomial_2nd = ???
   
     
-  
 }
 
 
