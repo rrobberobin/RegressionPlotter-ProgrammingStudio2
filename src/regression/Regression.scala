@@ -3,13 +3,22 @@ package regression
 import scala.math._
 
 
+/* I have created a lot of methods in this class. 
+ * They have been created with extendability in mind and will be more useful when/if I create other regression models. 
+ * Many models use the same components.
+ */
+
 class Regression {
   
+  def dataHandler(data:Array[Double]) = ???
   
-  def dataHandler(data:Array[Double]) = 1
   
-  
-  //Simple linear regression
+/* Here are a lot of methods. No need to go into the specifics of all methods.
+ * The method "linear" is the Simple linear regression. It uses the methods "slope" and "yIntersect". 
+ * Those methods can be found at the bottom of the page.
+ * Some helper methods are used for the implementation of slope and yIntersect.
+ * 
+ */
   
   def totalSum(data:Array[Double]):Double = {
     
@@ -30,7 +39,7 @@ class Regression {
     
     var correction = 1
     
-    if(data.size<2) correction = 0                             // this correction checker could be unnecessary
+    if(data.size<2) correction = 0        // this correction checker could be unnecessary
     
     var sumOfSquaredDifferences = 0.0
     
@@ -66,6 +75,9 @@ class Regression {
   def meanOfSquared (data:Array[Double]): Double = mean(data.map(x=> x*x))
     
   
+  
+  
+  //slope formula: slope = (mean(x)-mean(y)) / ((mean(x))^2-mean(x^2))
   def slope (dataX:Array[Double], dataY:Array[Double]) = { 
     
     val numerator = (mean(dataX)-mean(dataY))
@@ -73,19 +85,18 @@ class Regression {
     val denominator = (mean(dataX)*mean(dataX)-meanOfSquared(dataX))
     
     numerator/denominator
-    
   }
   
+  
+  //yIntersect formula: yIntersect = mean(y) - slope*mean(x)
   def yIntersect (dataX:Array[Double],dataY:Array[Double]) = mean(dataY) - (slope(dataX,dataY)*mean(dataX))
   
   
+  //Simple linear regression method. It returns a string of the function. (E.g "y=2x+5")
   def linear (dataX:Array[Double],dataY:Array[Double]):String = {
     
     "y = " + (slope(dataX,dataY)).toString+ "x + " + yIntersect(dataX,dataY)
-    
   }
-  
-  
   
   
   
@@ -93,7 +104,7 @@ class Regression {
   //Polynomial regression of 2nd degree
   
   
-  def polynomial_2nd = 0
+  def polynomial_2nd = ???
   
     
   

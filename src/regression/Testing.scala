@@ -1,8 +1,11 @@
 package regression
 
-import Regression._               // not sure if needed
+import Regression._    // not sure if needed
 
-object Test {
+
+
+//This is a test for the simple linear regression in string form. The method "linear" is used from class Regression
+object RegressionTest {
   
   val tester = new Regression
   
@@ -16,6 +19,7 @@ object Test {
   
   def main (args:Array[String]): Unit = {
     println(tester.linear(dataX,dataY))
+    
   }
   
 }

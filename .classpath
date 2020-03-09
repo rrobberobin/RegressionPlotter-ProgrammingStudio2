@@ -4,6 +4,7 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="con" path="org.scala-ide.sdt.launching.SCALA_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/swing"/>
 	<classpathentry kind="lib" path="C:/Users/sepie/OneDrive/Documents/Robin Aalto/Programming/Studio 2/TestingLibraries/scalatest_2.12-3.0.4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
