@@ -1,0 +1,21 @@
+My progression so far
+
+Three classes have been created. "Regression" and "Testing" classes have content, while "FileInput" is empty. 
+
+The Regression class is done for now. It receives an array of data and converts it into the resulting regression function. 
+It returns the function as a string. I will later have to see in which form the function should be returned. 
+The class basically takes care of all the mathematics needed for the regression. 
+
+My testing class's first test is done. It tests the central functionality of the regression class, the "linear" method. It will still have to be expanded. 
+It includes a "main" function, for testing purposes. The linear method returns a string of the regression function. E.g. y=5x+6.
+
+Some comments have been added to my code in class Regression and Testing
+
+Problems in the start have been: 
+Making the generic project made in git a scala project. Importing libraries and jars. 
+At the moment trying to import the swing library.
+Some minor technical problems in implementing the regression, but those have been resolved.
+
+The weekly exercises ended last week and after that I started with the project. I'm roughly at the pace that I was expecting. 
+There have been many things to do to get the project started, like doing research and solving technical difficulties. 
+Workload ~15 hours

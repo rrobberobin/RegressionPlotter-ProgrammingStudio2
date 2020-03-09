@@ -17,6 +17,7 @@ object RegressionTest {
   
   val dataY = dataDoubles.map(_._2)
   
+  //the test is in from of a main method
   def main (args:Array[String]): Unit = {
     println(tester.linear(dataX,dataY))
     
