@@ -36,7 +36,7 @@ object RegressionTest {
     
     println("\nNext test coming up:\n\n")
     
-    println(inputTest.getArray(0)) //.foreach(println(_))
+    println(inputTest.getArray(0)) //.foreach(println(_))    // somehow this returns weird outputs
   }
   
 }

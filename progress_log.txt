@@ -1,21 +1,15 @@
-My progression so far
+My 2 week progression
 
-Three classes have been created. "Regression" and "Testing" classes have content, while "FileInput" is empty. 
+Class "FileInput" has been properly started now and it is used for reading data from files. It should now somewhat be able to read data, 
+but there is some bug that makes unwanted changes when returning the data. When that bug is cleared, 
+my next step will be to make it take the CSV format into account.
+The "Testing" object has been updated correspondigly, to test the FileInput.
+SwingTestObject has been created but it is empty.
 
-The Regression class is done for now. It receives an array of data and converts it into the resulting regression function. 
-It returns the function as a string. I will later have to see in which form the function should be returned. 
-The class basically takes care of all the mathematics needed for the regression. 
+The regression class still works as before. FileInpout works partially. Both have been tested.
 
-My testing class's first test is done. It tests the central functionality of the regression class, the "linear" method. It will still have to be expanded. 
-It includes a "main" function, for testing purposes. The linear method returns a string of the regression function. E.g. y=5x+6.
+I believe I have resolved the problems with importing libraries and have succesfully imported swing, scalaFX and O1Library. Only time will tell for sure...
+Most of the my time has gone to research and solving technical difficulties. Much less time to actually writing code.
 
-Some comments have been added to my code in class Regression and Testing
-
-Problems in the start have been: 
-Making the generic project made in git a scala project. Importing libraries and jars. 
-At the moment trying to import the swing library.
-Some minor technical problems in implementing the regression, but those have been resolved.
-
-The weekly exercises ended last week and after that I started with the project. I'm roughly at the pace that I was expecting. 
-There have been many things to do to get the project started, like doing research and solving technical difficulties. 
+My other courses have taken a lot of time and I haven't been able to work at the project as much as I had hoped, but I'm still progressing forward.
 Workload ~15 hours
