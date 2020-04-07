@@ -11,19 +11,22 @@ class FileInput (file:String) {
   }
   
   val source = Source.fromFile(dataFile)
-  var dataArray = Array[Double]()
+  val sourceArray = source.getLines.filter(_.nonEmpty).toArray
+//  val theLines = source.getLines.filter(_.nonEmpty)
+//  var dataArray = Array[Double]()
+//  
+//  
+//  while(source.hasNext){
+//    dataArray = dataArray :+  theLines.next.toDouble   //For both x and y values. Maybe only need one because they are inside the same "next"
+//    //source.next //extra away
+//  }
+//  
+//  
+//  def getArray = dataArray
   
-  
-  //data.map(_.toDouble)
-  
-  while(source.hasNext){
-    dataArray = dataArray :+  source.next.toDouble  //.getLines.filter(_.nonEmpty).map(_.toInt).toArray //:+ source.next.toDouble //For both x and y values. Maybe only need one because they are inside the same "next"
-    //source.next //extra away
-  }
-  
-  //dataArray.foreach(println(_))
-  
-  def getArray = dataArray
+  val commaSeparated = sourceArray.map(_.split(","))//.map(_.))//.flatten
+  val numbers = commaSeparated.map(_.map(_.toDouble))
+  val pairs = numbers.map(x => (x(0),x(1)))
   
   source.close
   

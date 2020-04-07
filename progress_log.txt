@@ -1,15 +1,18 @@
-My 2 week progression
+Progress
 
-Class "FileInput" has been properly started now and it is used for reading data from files. It should now somewhat be able to read data, 
-but there is some bug that makes unwanted changes when returning the data. When that bug is cleared, 
-my next step will be to make it take the CSV format into account.
-The "Testing" object has been updated correspondigly, to test the FileInput.
-SwingTestObject has been created but it is empty.
+Class "FileInput" is able to handle csv data now in a very specific format. I managed to remove the bug which prevented the file handling.
+The "Testing" object has been updated correspondigly and the tests for FileInput are working. 
+Created a couple of csv data files for testing as well.
 
-The regression class still works as before. FileInpout works partially. Both have been tested.
+I managed to create some small things in Swing, so it's working. But I don't think I can make graphs with swing.
+That's why it's crucial to get ScalaFX working. After importing ScalaFX, I tried using it, but I'm having problems creating anything.
+Getting this error:
+◾Symbol 'type <none>.event.EventTarget' is missing from the classpath. 
+This symbol is required by 'class scalafx.stage.Window'. 
+Make sure that type EventTarget is in your classpath and check for conflicting dependencies with -Ylog-classpath. 
+A full rebuild may help if 'Window.class' was compiled against an incompatible version of <none>.event.
 
-I believe I have resolved the problems with importing libraries and have succesfully imported swing, scalaFX and O1Library. Only time will tell for sure...
-Most of the my time has gone to research and solving technical difficulties. Much less time to actually writing code.
+Most of my time has gone to solving problems which pop up everywhere and researching how to solve them. 
+Much less time has gone to actually getting anything done.
 
-My other courses have taken a lot of time and I haven't been able to work at the project as much as I had hoped, but I'm still progressing forward.
-Workload ~15 hours
+Workload ~20 hours

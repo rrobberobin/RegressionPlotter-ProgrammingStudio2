@@ -8,7 +8,7 @@ import scala.math._
  * Many models use the same components.
  */
 
-class SimpleRegression {
+class SimpleRegression1 {
   
   //def dataHandler(data:Array[Double]) = ???
   
