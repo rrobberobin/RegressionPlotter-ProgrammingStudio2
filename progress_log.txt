@@ -5,14 +5,9 @@ The "Testing" object has been updated correspondigly and the tests for FileInput
 Created a couple of csv data files for testing as well.
 
 I managed to create some small things in Swing, so it's working. But I don't think I can make graphs with swing.
-That's why it's crucial to get ScalaFX working. After importing ScalaFX, I tried using it, but I'm having problems creating anything.
-Getting this error:
-◾Symbol 'type <none>.event.EventTarget' is missing from the classpath. 
-This symbol is required by 'class scalafx.stage.Window'. 
-Make sure that type EventTarget is in your classpath and check for conflicting dependencies with -Ylog-classpath. 
-A full rebuild may help if 'Window.class' was compiled against an incompatible version of <none>.event.
+That's why it's crucial to get ScalaFX working. After a whole lot of help from the staff, I got ScalaFX to work. The problem was adoptopenjdk.
 
 Most of my time has gone to solving problems which pop up everywhere and researching how to solve them. 
 Much less time has gone to actually getting anything done.
 
-Workload ~20 hours
+Workload ~40 hours
