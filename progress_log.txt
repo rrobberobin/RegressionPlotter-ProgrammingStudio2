@@ -1,13 +1,8 @@
 Progress
 
-Class "FileInput" is able to handle csv data now in a very specific format. I managed to remove the bug which prevented the file handling.
-The "Testing" object has been updated correspondigly and the tests for FileInput are working. 
-Created a couple of csv data files for testing as well.
+All plotting functions work now. Bascially my plotting app works. They can be used by running the plotting object
 
-I managed to create some small things in Swing, so it's working. But I don't think I can make graphs with swing.
-That's why it's crucial to get ScalaFX working. After a whole lot of help from the staff, I got ScalaFX to work. The problem was adoptopenjdk.
+Got a lot done this week. Almost all of my time has been used to work on this project. 
+Finally now when I've got one course less, I can spend some time on this.
 
-Most of my time has gone to solving problems which pop up everywhere and researching how to solve them. 
-Much less time has gone to actually getting anything done.
-
-Workload ~40 hours
+Workload ~100 hours

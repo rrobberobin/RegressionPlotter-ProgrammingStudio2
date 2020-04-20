@@ -1,16 +1,15 @@
-package Regression
+package regression
 
 import scala.io.Source
 
-class FileInput (file:String) {
+class FileInput (var file:String) {
   
-  var dataFile = file
   
   def changeFile(otherFile:String) = {
-    dataFile = otherFile
+    file = otherFile
   }
   
-  val source = Source.fromFile(dataFile)
+  val source = Source.fromFile(file)
   val sourceArray = source.getLines.filter(_.nonEmpty).toArray
 //  val theLines = source.getLines.filter(_.nonEmpty)
 //  var dataArray = Array[Double]()

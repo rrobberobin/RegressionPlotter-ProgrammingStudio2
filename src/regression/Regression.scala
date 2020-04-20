@@ -8,7 +8,7 @@ import scala.math._
  * Many models use the same components.
  */
 
-class SimpleRegression1 {
+object RegressionMath {
   
   //def dataHandler(data:Array[Double]) = ???
   
@@ -98,17 +98,6 @@ class SimpleRegression1 {
     "y = " + (slope(dataX,dataY)).toString+ "x + " + yIntersect(dataX,dataY)
   }
   
-  
-  
-  
-  //Polynomial regression of 2nd degree
-  
-  
-  
-  
-  //def polynomial_2nd = ???
-  
-    
 }
 
 
