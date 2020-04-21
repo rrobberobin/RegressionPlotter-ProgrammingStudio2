@@ -50,6 +50,10 @@ object RegressionTest {
     val deta = bestTestYet.pairs.map(_._1)
     val detaY = bestTestYet.pairs.map(_._2)
     println(RegressionMath.linear(deta,detaY))
+    
+    
+    
+    println(scala.io.Source.fromFile("Statfin.csv"))
   }
   
 }
