@@ -4,7 +4,7 @@ import scala.math._
 
 
 /* I have created a lot of methods in this class. 
- * They have been created with extendability in mind and will be more useful when/if I create other regression models. 
+ * They have been created with extendability in mind and will be more useful if I create other regression models. 
  * Many models use the same components.
  */
 

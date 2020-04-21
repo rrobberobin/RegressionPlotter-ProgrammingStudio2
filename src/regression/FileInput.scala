@@ -4,10 +4,9 @@ import scala.io.Source
 
 class FileInput (var file:String) {
   
-  
-  def changeFile(otherFile:String) = {
-    file = otherFile
-  }
+  if(file== "%.csv"){}
+  else if(file== "%.csv"){}
+
   
   val source = Source.fromFile(file)
   val sourceArray = source.getLines.filter(_.nonEmpty).toArray
