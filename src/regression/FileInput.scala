@@ -55,36 +55,6 @@ class FileInput(var file: String) {
   }
   
 
-  //handles csv files with semicolon as delimiter
-  if (source.hasNext && filetype == "csv") { // can't handle (-565-565) or (4455.345.35)
-    val rows = source.getLines.filter(_.nonEmpty).toArray
-    val commaSeparated = rows.map(_.split(";")) //.map(_.))//.flatten
-    label = commaSeparated(0)
-    val allWeirdDataAway = commaSeparated.map(_.map(_.split("[^\\d.-]").filter(_.nonEmpty))) //:removes all non numbers   //collect{case v:AnyVal =>v}
-    val noEmptyMinuses = allWeirdDataAway.map(_.map(_.filter(_.exists(_.isDigit)))) //no minuses without numbers
-    val notEmptyPairs = noEmptyMinuses.map(_.filter(!_.isEmpty))
-    val onlyPairs = notEmptyPairs.map(_.drop(2)).filter(_.size > 1)
-    println(onlyPairs.take(5).toVector.map(_.toVector.map(_.toVector)))
-    //val numbers = noEmptyMinuses.map(_.map(_.map(_.toDouble)))
-    if (!onlyPairs.isEmpty && !onlyPairs.forall(_.isEmpty) && !onlyPairs.forall(_.forall(_.isEmpty))) {
-      pairs = onlyPairs.map(x => (x(0)(0).toDouble, x(1)(0).toDouble))
-      pairs = pairs.sortBy(_._1)
-    }
-  }
-
-  //handles tsv files
-  if (source.hasNext && filetype == "tsv") { // can't handle (-565-565) or (4455.345.35)
-    val rows = source.getLines.filter(_.nonEmpty).toArray
-    val commaSeparated = rows.map(_.split("	")) //.map(_.))//.flatten
-    val allWeirdDataAway = commaSeparated.map(_.map(_.split("[^\\d.-]").filter(_.nonEmpty))) //:removes all non numbers   //collect{case v:AnyVal =>v}
-    val onlyPairs = allWeirdDataAway.filter(_.size > 1)
-    val notEmptyPairs = onlyPairs.map(_.filter(!_.isEmpty))
-    val numbers = onlyPairs.map(_.map(_.map(_.toDouble)))
-    if (!numbers.isEmpty && !numbers.forall(_.isEmpty) && !numbers.forall(_.forall(_.isEmpty))) {
-      pairs = numbers.map(x => (x(0)(0), x(1)(0)))
-      pairs = pairs.sortBy(_._1)
-    }
-  }
 
   if (source.hasNext && filetype == "json") {
 
