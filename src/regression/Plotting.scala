@@ -16,35 +16,61 @@ import scalafx.stage.FileChooser
 import scalafx.geometry.Orientation
 
 object Plotting extends JFXApp {
-  
-  var commaOrSemicolon = "semicolon"
-  
+
   var inputFile = new FileInput("Statfin.csv") //If It's empty, throw an error
 
-  var dataPerLine = 5  //inputFile.pairs.size/5    //More dataPerLine means less lines //cant be too many lines or can it?
+  var dataPerLine = inputFile.pairs.size / 5 //More dataPerLine means less lines //cant be too many lines or can it?
 
+  //creates the axes for the plots
   var xAxis = NumberAxis()
   var yAxis = NumberAxis()
+
   var xAxis2 = NumberAxis()
   var yAxis2 = NumberAxis()
   var xAxis3 = NumberAxis()
   var yAxis3 = NumberAxis()
 
+  if(inputFile.label.size>1){
+  xAxis.label = inputFile.label(0)
+  yAxis.label = inputFile.label(1)
+  xAxis2.label=inputFile.label(0)
+  yAxis2.label=inputFile.label(1)
+  xAxis3.label=inputFile.label(0)
+  yAxis3.label=inputFile.label(1)
+  }
+  
   def updateAll { //If It's empty, throw an error
-
+    
+    //the data array
     val pairs = inputFile.pairs
-
+    
+    // the slope of the Simple Regression line
     val lineSlope = RegressionMath.slope(pairs.map(_._1), pairs.map(_._2))
+    
+    //the y intersect of the same line
     val xIsZeroAt = RegressionMath.yIntersect(pairs.map(_._1), pairs.map(_._2))
+    
+    //The same line in array form. 
+    //The form of the line is: Array((starting x-coordinate, starting y-coordinate)(ending x-coordinate, ending y-coordinate))
+    //Mathematically the line would be infinitely long, but we are restriciting the size according to the used data
     val line = Array((pairs.head._1, xIsZeroAt), (pairs.last._1, xIsZeroAt + lineSlope * pairs.last._1))
-
+    
+    // the Segmented Regression lines. They are grouped together in an array where each positon in the array represent one line.
     val grouped = pairs.sliding(dataPerLine, dataPerLine - 1).toList // Shouldn't work if dataPerLine is 1 or less
+    
+    //the x-coordinate of the first and the last datapoint
     val allX = grouped.map(g => (g.head._1, g.last._1))
 
+    // the slope of the Segmented Regression lines
     val groupedSlope = grouped.map(g => RegressionMath.slope(g.map(_._1), g.map(_._2)))
+    
+    //the y intersect of the same lines
     val groupedZeroAt = grouped.map(g => RegressionMath.yIntersect(g.map(_._1), g.map(_._2)))
+    
+    //the y intersect, slopes and x-coordinates geouped together. This is done to easily trasnform the lines into array form
     val together = (groupedZeroAt zip groupedSlope) zip allX
 
+    //the lines in array form
     val groupedLines = together.map(g => Array((g._2._1, g._1._1 + g._1._2 * g._2._1), (g._2._2, g._1._1 + g._1._2 * g._2._2)))
 
     stage = new JFXApp.PrimaryStage {
@@ -79,6 +105,36 @@ object Plotting extends JFXApp {
         segmentsText.prefWidth = 350
         segmentsText.promptText = "How many datapoints per line. Hit enter to confirm"
 
+        
+        val changeLabels = new MenuItem("Change Labels")
+        
+//        changeLabels.onAction = (event:ActionEvent) => {
+//          
+//          selectedAxis = 
+//          
+//          val Axislabel = new TextField
+//          Axislabel.prefWidth = 550
+//          Axislabel.promptText = "Change labels of x and y axis. Write in the form: x-axis,y-axis  Hit enter to confirm"
+//
+//          menuPane.children = Iterable(menuBar, label, segmentsText, Axislabel)
+//          
+//          
+//          Axislabel.onAction = (event: ActionEvent) => {
+//            val text = Axislabel.text.apply.split(",")
+//            if (2 < text.size) {
+//              xAxis.label =text(0)
+//              yAxis.label= text(1)
+//              updateAll
+//            }
+//          }        
+//          
+//        }
+        
+        
+        
+        val changeDelimiter = new MenuItem("Change Delimiter")
+        
+        
         val changeAxisSize = new Menu("Change Axis")
 
         val ScatterX = new MenuItem("ScatterX")
@@ -93,7 +149,7 @@ object Plotting extends JFXApp {
         //val currentFile = new MenuItem("Current File")
 
         fileMenu.items = List(open, exit)
-        regressionMenu.items = List(changeAxisSize)
+        regressionMenu.items = List(changeAxisSize,changeLabels)
 
         menuBar.menus = List(fileMenu, regressionMenu)
 
@@ -124,20 +180,18 @@ object Plotting extends JFXApp {
           val selectedFile = fileChooser.showOpenDialog(stage)
           if (selectedFile != null) {
             val path = selectedFile.getPath
-            if (path.endsWith(".csv") || path.endsWith(".csv")) { //something other than csv here
+            if (path.endsWith(".csv") || path.endsWith(".tsv")) { //something other than csv here
               val oldfile = inputFile
               inputFile = new FileInput(path) // val path = selectedFile.getPath//.replaceAll("\\\\", "\\\\\\\\")
               label.text = "File: " + selectedFile
-              if(!inputFile.pairs.isEmpty) {
-                dataPerLine = inputFile.pairs.size/5
+              if (!inputFile.pairs.isEmpty) {
+                dataPerLine = inputFile.pairs.size / 5
                 updateAll
-              }
-              else {
+              } else {
                 inputFile = oldfile
-                label.text= "The file you opened contains data in the wrong format"
+                label.text = "The file you opened contains data in the wrong format"
               }
-            }
-            else label.text = "Wrong filetype: '" + path.substring(path.lastIndexOf(".") + 1) + "'. Should be csv or ..."
+            } else label.text = "Wrong filetype: '" + path.substring(path.lastIndexOf(".") + 1) + "'. Should be csv or tsv"
           }
         }
 
@@ -242,8 +296,7 @@ object Plotting extends JFXApp {
             }
           }
         }
-        
-        
+
         //We can change how many lines the segment regression consists of
         segmentsText.onAction = (event: ActionEvent) => {
           val text = segmentsText.text.apply.toInt

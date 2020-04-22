@@ -8,6 +8,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/O1Library"/>
 	<classpathentry kind="lib" path="/O1Library/lib/scala-swing_2.12-2.1.0.jar"/>
 	<classpathentry kind="lib" path="C:/Users/sepie/scalafx/scalafx/target/scala-2.12/scalafx_2.12-14-R19-SNAPSHOT.jar"/>
-	<classpathentry kind="lib" path="C:/Users/sepie/Downloads/Vegas-master.zip"/>
+	<classpathentry kind="lib" path="lib/jackson-module-scala_2.12-2.11.0.rc1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
