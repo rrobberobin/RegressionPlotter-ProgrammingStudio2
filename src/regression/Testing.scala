@@ -56,7 +56,6 @@ object RegressionTest {
   codec.onMalformedInput(CodingErrorAction.REPLACE)
   codec.onUnmappableCharacter(CodingErrorAction.REPLACE)    
     
-    
 
 //    val a = scala.io.Source.fromFile("003_124r_2018 (1).csv")
 //    val b = a.getLines
