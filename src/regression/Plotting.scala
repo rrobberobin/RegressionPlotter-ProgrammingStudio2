@@ -44,11 +44,6 @@ object Plotting extends JFXApp {
   val currentFile = new Label("Current file: " + inputFile.file)
   currentFile.layoutX = 150
 
-  //shows any errors or actions which happen
-  val actions = new Label("Some messages will appear here. Don't restart your program if you want your changes to stay")
-  actions.layoutX = 150
-  actions.layoutY = 15
-
   //textField for different uses
   val textField = new TextField
   textField.prefWidth = 350
@@ -99,10 +94,10 @@ object Plotting extends JFXApp {
   def updateAll { //We can update the window when we make changes
 
     //the data array
-    //val pairs = inputFile.pairs
-    var pairs = (0 to 100000).map(x=> (x.toDouble,x.toDouble)).toArray
-    
-    if(pairs.size>1000) pairs = pairs.grouped(pairs.size/1000).map(_.take(1)).flatten.toArray // if data is too large. Data will be grouped to chunks and some will be ignored.
+    var pairs = inputFile.pairs
+    //var pairs = (0 to 100000).map(x=> (x.toDouble,x.toDouble)).toArray
+
+    if (pairs.size > 1000) pairs = pairs.grouped(pairs.size / 1000).map(_.take(1)).flatten.toArray // if data is too large. Data will be grouped to chunks and some will be ignored.
 
     // the slope of the Simple Regression line
     val lineSlope = RegressionMath.slope(pairs.map(_._1), pairs.map(_._2))
@@ -119,8 +114,9 @@ object Plotting extends JFXApp {
     val line = Array((pairs.head._1, xIsZeroAt), (pairs.last._1, xIsZeroAt + lineSlope * pairs.last._1))
 
     // the Segmented Regression lines. They are grouped together in an array where each positon in the array represent one line.
-    val grouped = pairs.sliding(dataPerLine, dataPerLine - 1).toArray // Won't work if dataPerLine is 1 or less 
-                                                                        //change all arrays to list if there appears any problems
+    val grouped = pairs.sliding(dataPerLine, dataPerLine - 1).toArray // Won't work if dataPerLine is 1 or less
+
+    //change all arrays to list if there appears any problems
     //the x-coordinate of the first and the last datapoint
     val allX = grouped.map(g => (g.head._1, g.last._1))
 
@@ -142,13 +138,13 @@ object Plotting extends JFXApp {
     //a window which pops up
     stage = new JFXApp.PrimaryStage {
       title = "Regression" //title of window
-      scene = new Scene(1100, 850) { //what is displayed inside window
+      scene = new Scene(1200, 850) { //what is displayed inside window
 
         //this creates a scatterplot
         val scatterData = XYChart.Series[Number, Number](pairs.size + " datapoints", ObservableBuffer(pairs.map(each => XYChart.Data[Number, Number](each._1, each._2)): _*))
         val scatter = new ScatterChart(xAxis, yAxis, ObservableBuffer(scatterData))
         scatter.layoutX = 10 //these specify the position of the plot
-        scatter.layoutY = 55
+        scatter.layoutY = 55 //these specify the position of the plot
         scatter.title = "Scatter Plot"
 
         //this creates a simple regression plot
@@ -166,28 +162,12 @@ object Plotting extends JFXApp {
         segmentedRegression.layoutY = 465
         segmentedRegression.title = "Segmented Regression with " + segmentedRegressionData.size + " segments"
 
-        //        //All theses panes are so that we can split up all of the content. Without these, the contents are on top of eachother
-        //        val menuPane = new FlowPane
-        //        menuPane.children = List(menuBar, currentFile)
-        //        //menuPane.maxHeight= 300
-        //
-        //        val actionsPane = new FlowPane
-        //        actionsPane.children = List(actions)
-        //        //actionsPane.maxHeight= 300
-        //
-        //        val plotPane = new FlowPane
-        //        plotPane.children = List(scatter)
-        //
-        //        val plotPane2 = new FlowPane
-        //        plotPane2.children = List(simpleRegression, segmentedRegression)
-        //        plotPane2.setOrientation(Orientation.Vertical)
-        //
-        //        //we store all panes inside one bigger pane
-        //        val rootPane = new FlowPane
-        //        rootPane.getChildren().addAll(menuPane, actionsPane, plotPane, plotPane2)
-        //        root = rootPane //root is for showing content on screen
+        //shows messages to help the user which happen
+        val messages = new Label("Some messages will appear here. Don't restart your program if you want your changes to stay")
+        messages.layoutX = 150
+        messages.layoutY = 15
 
-        content = Array(menuBar, currentFile, actions, scatter, simpleRegression, segmentedRegression)
+        content = Array(menuBar, currentFile, messages, scatter, simpleRegression, segmentedRegression)
 
         //For closing the program. Implements the action: (press the exit button => exit the progam)
         exit.onAction = (event: ActionEvent) => sys.exit(0)
@@ -195,32 +175,28 @@ object Plotting extends JFXApp {
         //for opening files. Implements the sequence of actions: (press the open button => choose a file => open the file)
         open.onAction = (event: ActionEvent) => {
 
-          val fileChooser = new FileChooser //opens a kind of file explorer
+          val fileChooser = new FileChooser //opens some kind of file explorer
           val selectedFile = fileChooser.showOpenDialog(stage) //chosen file
           if (selectedFile != null) {
-            val path = selectedFile.getPath
-            if (path.endsWith(".csv") || path.endsWith(".tsv")) {
-              val oldfile = inputFile
-              inputFile = new FileInput(path) // val path = selectedFile.getPath//.replaceAll("\\\\", "\\\\\\\\")
+            val path = selectedFile.getPath //receives path
+            val newFile = new FileInput(path) //creates a file input object
+            if (newFile.possibleError == None) { //if everything is all right, updates to the new file
+              inputFile = newFile
               currentFile.text = "File: " + selectedFile
-              if (!inputFile.pairs.isEmpty) {
-                dataPerLine = inputFile.pairs.size / 5
-                updateAll
-              } else {
-                inputFile = oldfile
-                actions.text = "The file you opened contains data in the wrong format"
-              }
-            } else actions.text = "Wrong filetype: '" + path.substring(path.lastIndexOf(".") + 1) + "'. Should be csv or tsv"
+              dataPerLine = if (inputFile.pairs.size / 5 > 1) inputFile.pairs.size / 5 else 4
+              updateAll
+            } else messages.text = { //otherwise reports the error
+              newFile.possibleError.get
+            }
           }
         }
 
-        //for chaning delimiter
+        //for changing delimiter
         changeDelimiter.onAction = (event: ActionEvent) => {
-          actions.text = "Change delimiter after having opened the wanted file"
+          messages.text = "Change delimiter after having opened the correct file"
+          content.add(textField) //adds texfield to window
 
-          //menuPane.children = List(menuBar, currentFile, actions, textField)
-          content = Array(menuBar, currentFile, actions, scatter, simpleRegression, segmentedRegression, textField)
-
+          //type in the value in the textfield
           textField.onAction = (event: ActionEvent) => {
             val text = textField.text.apply
             if (text.nonEmpty) {
@@ -231,47 +207,56 @@ object Plotting extends JFXApp {
           }
         }
 
-        //You can change the size of the axes
+        //For changing the size of an axis
         changeAxisSize.onAction = (event: ActionEvent) => {
-          actions.text = "Change size of Axis. Write in the form: lowerBound,upperBound,tickSize You need to specify all three: E.g. 10,100,10 Hit enter to confirm. Remember to choose an axis first"
+          if (plotToggle.getSelectedToggle == null) messages.text = "You haven't chosen an axis. Choose one first"
+          else {
+            messages.text = {
+              "Change size of Axis. Write in the form: lowerBound,upperBound,tickSize " +
+                "You need to specify all three: E.g. 10,100,10 Hit enter to confirm. Remember to check that you have the correct axis chosen"
+            }
 
-          //menuPane.children = List(menuBar, currentFile, actions, textField)
-          content = Array(menuBar, currentFile, actions, scatter, simpleRegression, segmentedRegression, textField)
+            content.add(textField) //adds texfield to window
 
-          textField.onAction = (event: ActionEvent) => {
-            val text = textField.text.apply.split(",")
-            if (text.size == 3 && plotToggle.getSelectedToggle != null) {
-              val res = text.map(_.toDouble)
-              
-              if(math.abs(res(1)-res(0))>(res(2)*50)) actions.text="Too small tick size. Try: " + (res(2)*40)
-              else{
-              val selected = plotToggle.getSelectedToggle
+            //type in the value in the textfield
+            textField.onAction = (event: ActionEvent) => {
+              val text = textField.text.apply.split(",")
+              if (text.size == 3) {
+                val res = text.map(_.toDouble)
 
-              if (ScatterX.isSelected) xAxis = new NumberAxis(res(0), res(1), res(2))
-              else if (ScatterY.isSelected) yAxis = new NumberAxis(res(0), res(1), res(2))
-              else if (SimpleX.isSelected) xAxis2 = new NumberAxis(res(0), res(1), res(2))
-              else if (SimpleY.isSelected) yAxis2 = new NumberAxis(res(0), res(1), res(2))
-              else if (SegmentX.isSelected) xAxis3 = new NumberAxis(res(0), res(1), res(2))
-              else if (SegmentY.isSelected) yAxis3 = new NumberAxis(res(0), res(1), res(2))
+                if (math.abs(res(1) - res(0)) / 50 > (res(2))) messages.text = "Too small tick size. Try: " + (math.abs(res(1) - res(0)) / 40)
+                else {
 
-              updateAll
-              
-              actions.text = "Some messages will appear here. Don't restart your program if you want your changes to stay"
-              
-            }}
+                  //checking which of the radiobuttons is selected
+                  if (ScatterX.isSelected) xAxis = new NumberAxis(res(0), res(1), res(2))
+                  else if (ScatterY.isSelected) yAxis = new NumberAxis(res(0), res(1), res(2))
+                  else if (SimpleX.isSelected) xAxis2 = new NumberAxis(res(0), res(1), res(2))
+                  else if (SimpleY.isSelected) yAxis2 = new NumberAxis(res(0), res(1), res(2))
+                  else if (SegmentX.isSelected) xAxis3 = new NumberAxis(res(0), res(1), res(2))
+                  else if (SegmentY.isSelected) yAxis3 = new NumberAxis(res(0), res(1), res(2))
+
+                  updateAll
+                }
+              } else if (text.size != 3) messages.text = {
+                "You need to specify all three. Write in the form: lowerBound,upperBound,tickSize. " +
+                  "An example of a working solution is: 0,100,10"
+              }
+            }
           }
         }
 
         changeAxisLabel.onAction = (event: ActionEvent) => {
-          actions.text = "Change label of Axis.  Hit enter to confirm. Remeber to choose an axis first"
+          if (plotToggle.getSelectedToggle == null) messages.text = "You haven't chosen an axis. You need to tick one of the axes first"
+          else {
+            messages.text = "Change label of axis. Hit enter to confirm. Remember to check that you have the correct axis chosen"
 
-          //menuPane.children = List(menuBar, currentFile, actions, textField)
-          content = Array(menuBar, currentFile, actions, scatter, simpleRegression, segmentedRegression, textField)
+            content.add(textField) //adds texfield to window
 
-          textField.onAction = (event: ActionEvent) => {
-            if (plotToggle.getSelectedToggle != null) {
+            //type in the value in the textfield
+            textField.onAction = (event: ActionEvent) => {
               val text = textField.text.apply
 
+              //checking which radiobutton is selected
               if (ScatterX.isSelected) xAxis.label = text
               else if (ScatterY.isSelected) yAxis.label = text
               else if (SimpleX.isSelected) xAxis2.label = text
@@ -286,22 +271,21 @@ object Plotting extends JFXApp {
 
         //We can change how many lines the segment regression consists of
         changeSegments.onAction = (event: ActionEvent) => {
-          actions.text = "Change how many datapoints you want per segment. Hit enter to confirm"
+          messages.text = "Change how many datapoints you want per segment. Hit enter to confirm"
 
-          //menuPane.children = List(menuBar, currentFile, actions, textField)
-          content = Array(menuBar, currentFile, actions, scatter, simpleRegression, segmentedRegression, textField)
+          content.add(textField) //adds texfield to window
 
+          //type in the value in the textfield
           textField.onAction = (event: ActionEvent) => {
             val text = textField.text.apply.toInt
             if (1 < text && text != dataPerLine) {
               if (text > inputFile.pairs.size / 11) {
                 dataPerLine = text // && text<pairs.size   maybe?
                 updateAll
-              } else actions.text = "Too few datapoints. Try more than : " + inputFile.pairs.size / 11
+              } else messages.text = "Too few datapoints. Try more than : " + inputFile.pairs.size / 11
             }
           }
         }
-
       }
     }
     //stage.setMaximized(true)

@@ -1,9 +1,6 @@
 package regression
 
 import scala.io.Source
-//import com.fasterxml.jackson._//databind.ObjectMapper
-//import com.fasterxml.jackson.module.scala.DefaultScalaModule
-//import com.fasterxml.jackson.module.scala.experimental.ScalaObjectMapper
 
 import scala.io.Codec
 import java.nio.charset.CodingErrorAction
@@ -11,17 +8,17 @@ import java.nio.charset.CodingErrorAction
 //reads the data from a file
 class FileInput(var file: String) {
 
+  val endIndex = file.lastIndexOf('.')
+
   val filetype = {
-    if (file.endsWith(".csv")) "csv"
-    else if (file.endsWith(".tsv")) "tsv"
-    else if (file.endsWith(".json")) "json" // what about  .txt  ?
-    else "unknown"
+    if (endIndex == -1) "No extension"
+    else if (file.drop(endIndex + 1).isEmpty) "No extension"
+    else file.drop(endIndex + 1).toLowerCase //returns e.g. csv
   }
 
   //get delimiter from plotting file
   var delimiter = Plotting.delimiter
 
-  
   //if data uses the wrong encoding, this will change it
   implicit val codec = Codec("UTF-8")
   codec.onMalformedInput(CodingErrorAction.REPLACE)
@@ -32,12 +29,15 @@ class FileInput(var file: String) {
 
   //pairs will contain the resulting data array when done
   var pairs = Array[(Double, Double)]()
-  
+
   //labels of the axes
   var label = Array[String]()
 
+  //for reporting possible error
+  var possibleError: Option[String] = None
+
   //handles csv and tsv files with different delimiters. Has some technical steps to remove unecessary data
-  if (source.hasNext && (filetype == "csv" || filetype == "tsv")) {
+  if (source.hasNext && Array("csv", "tsv", "txt").contains(filetype)) {
     val rows = source.getLines.filter(_.nonEmpty).toArray //turns the data into an Array. Each value in the array is an row in the data file
 
     //checks for which delimiter is used and makes changes accordingly
@@ -63,14 +63,11 @@ class FileInput(var file: String) {
       pairs = onlyPairs.map(x => (x(0)(0).toDouble, x(1)(0).toDouble)) //breaks down the unnecessary Array structure and only chooses the data. Also turns strings into doubles.
       pairs = pairs.sortBy(_._1) //sorts the data by the x coordinate, from small to large
     }
-  }
+    if (pairs.isEmpty) possibleError = Some("The file you opened contains data in the wrong format. No suitable data found")
 
-  if (source.hasNext && filetype == "json") {
-
-    //val mapper = new ObjectMapper()
-    //"rghrtyuiltkjhgrfed".parse
-
-  }
+  } else if (!source.hasNext) possibleError = Some("File is empty. Choose another file")
+  else if (filetype == "No extension") possibleError = Some("Extension is missing")
+  else possibleError = Some("Wrong filetype: '" + filetype + "' Should be csv, tsv or txt")
 
   source.close
 
