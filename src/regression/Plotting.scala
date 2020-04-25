@@ -19,9 +19,9 @@ object Plotting extends JFXApp {
 
   var delimiter = "," //comma is the default delimiter
 
-  var inputFile = new FileInput("data3.csv") //If It's empty, throw an error
+  var inputFile = new FileInput("data3.csv")
 
-  var dataPerLine = if (inputFile.pairs.size / 5 > 1) inputFile.pairs.size / 5 else 4 //More dataPerLine means less lines //cant be too many lines or can it?
+  var dataPerLine = if (inputFile.pairs.size / 4 > 1) inputFile.pairs.size/4 else 3 //More dataPerLine means less lines //cant be too many lines or can it?
 
   //creates the axes for the plots
   var xAxis = NumberAxis()
@@ -183,7 +183,7 @@ object Plotting extends JFXApp {
             if (newFile.possibleError == None) { //if everything is all right, updates to the new file
               inputFile = newFile
               currentFile.text = "File: " + selectedFile
-              dataPerLine = if (inputFile.pairs.size / 5 > 1) inputFile.pairs.size / 5 else 4
+              dataPerLine = if (inputFile.pairs.size / 4 > 1) inputFile.pairs.size/4 else 3
               updateAll
             } else messages.text = { //otherwise reports the error
               newFile.possibleError.get

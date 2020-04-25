@@ -58,7 +58,6 @@ class FileInput(var file: String) {
     var notEmptyPairs = noEmptyMinuses.map(_.filter(!_.isEmpty)) //removes empty rows
     if (delimiter == ";") notEmptyPairs = notEmptyPairs.map(_.drop(2)) //specifically used for the Statfin.csv file
     val onlyPairs = notEmptyPairs.filter(_.size > 1) //removes rows with missing data. The file will crash without this
-    //println(onlyPairs.take(5).toVector.map(_.toVector.map(_.toVector))) //:test
     if (!onlyPairs.isEmpty && !onlyPairs.forall(_.isEmpty) && !onlyPairs.forall(_.forall(_.isEmpty))) {
       pairs = onlyPairs.map(x => (x(0)(0).toDouble, x(1)(0).toDouble)) //breaks down the unnecessary Array structure and only chooses the data. Also turns strings into doubles.
       pairs = pairs.sortBy(_._1) //sorts the data by the x coordinate, from small to large

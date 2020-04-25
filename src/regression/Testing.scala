@@ -3,7 +3,6 @@ package regression
 import scala.io.Codec
 import java.nio.charset.CodingErrorAction
 
-
 //This is a test for the simple linear regression in string form. The method "linear" is used from class Regression
 object RegressionTest {
 
@@ -22,10 +21,12 @@ object RegressionTest {
     (twoBig.map(_._1), twoBig.map(_._2))
   }
 
-  val inputTest = new FileInput("data.csv") // same problem here
-  val inputTest2 = new FileInput("C:\\Users\\sepie\\git\\project-programming-studio-2-robin-per-l-\\data.csv")
-
-  def inputter = inputTest
+    Plotting.delimiter=","
+  
+    val inputTest = new FileInput("data.csv")
+    val inputTest2 = new FileInput("data2.csv")
+    val inputTest3 = new FileInput("data3.csv")
+    
 
   //The test is in a form of a main method
   def main(args: Array[String]): Unit = {
@@ -37,49 +38,37 @@ object RegressionTest {
 
     println("\nNext test coming up:\n\n")
 
-    //inputTest.getArray.foreach(println)    // somehow this returns weird outputs
-    //inputTest.numbers.map(_.foreach(println))
-    //inputTest.commaSeparated.map(_.mkString).foreach(println)
-    val dataX = inputTest.pairs.map(_._1)
-    val dataY = inputTest.pairs.map(_._2)
+        inputTest.pairs.foreach(println)
+    //println(onlyPairs.take(5).toVector.map(_.toVector.map(_.toVector))) //test
 
-    println(RegressionMath.linear(dataX, dataY))
+        val dataX = inputTest.pairs.map(_._1)
+        val dataY = inputTest.pairs.map(_._2)
+    
+        println(RegressionMath.linear(dataX, dataY))
+    
+        val bestTestYet = new FileInput("data2.csv")
+        val deta = bestTestYet.pairs.map(_._1)
+        val detaY = bestTestYet.pairs.map(_._2)
+        println(RegressionMath.linear(deta, detaY))
+    
+        println("\nNext test coming up:\n\n")
 
-    val bestTestYet = new FileInput("data2.csv")
-    val deta = bestTestYet.pairs.map(_._1)
-    val detaY = bestTestYet.pairs.map(_._2)
-    println(RegressionMath.linear(deta, detaY))
+    implicit val codec = Codec("UTF-8")
+    codec.onMalformedInput(CodingErrorAction.REPLACE)
+    codec.onUnmappableCharacter(CodingErrorAction.REPLACE)
 
-    println("\nNext test coming up:\n\n")
+    val a = scala.io.Source.fromFile("Statfin.csv")
+    val b = a.getLines
+    var n = 0
 
-  implicit val codec = Codec("UTF-8")
-  codec.onMalformedInput(CodingErrorAction.REPLACE)
-  codec.onUnmappableCharacter(CodingErrorAction.REPLACE)    
-    
+    while (b.hasNext && n < 15) {
 
-//    val a = scala.io.Source.fromFile("003_124r_2018 (1).csv")
-//    val b = a.getLines
-//    var n = 0
-//
-//    while (b.hasNext && n < 15) {
-//
-//      println(b.next)
-//      n += 1
-//    }
-//
-//    a.close
-    
-    
-    
-    //new FileInput("Statfin.csv")      // I should remove all arrays which dont contain numbers. Maybe not needed beqacuse minus is only non number taht can exist
-    
-    
-    
-    
-    
-    
-    
-    
+      println(b.next)
+      n += 1
+    }
+
+    a.close
+
   }
 
 }
