@@ -9,8 +9,6 @@ import scala.math._
 
 object RegressionMath {
 
-  //def dataHandler(data:Array[Double]) = ???
-
   /* Here are a lot of methods. No need to go into the specifics of all methods.
  * The method "linear" is the Simple linear regression. It uses the methods "slope" and "yIntersect".
  * Those methods can be found at the bottom of the page.
