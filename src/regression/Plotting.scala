@@ -113,7 +113,7 @@ object Plotting extends JFXApp {
   val regressionMenu = new Menu("Regression")
   regressionMenu.items = {
     Array(changeSegments, new SeparatorMenuItem, toggleMenu, new SeparatorMenuItem, changeAxisRange, changeAxisLabel, changeAxisSize, movePlot)
-  } // seperatorMenuItem separates different items
+  } // seperatorMenuItem separates different items with a line
 
   //a menu bar where we can put the menus. This will show up as a "bar", instead of freely floating menus.
   val menuBar = new MenuBar
