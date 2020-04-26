@@ -21,15 +21,17 @@ object RegressionTest {
     (twoBig.map(_._1), twoBig.map(_._2))
   }
 
-    Plotting.delimiter=","
-  
-    val inputTest = new FileInput("data.csv")
-    val inputTest2 = new FileInput("data2.csv")
-    val inputTest3 = new FileInput("data3.csv")
-    
+  Plotting.delimiter = "."
 
-  //The test is in a form of a main method
+  //test for the fileInput class. Later, I had to change these tests, so that they would still work
+  val inputTest = new FileInput("data.csv")
+  val inputTest2 = new FileInput("data2.csv")
+  val inputTest3 = new FileInput("data3.csv")
+
+  //The testing in form of a main method
   def main(args: Array[String]): Unit = {
+
+    //testing my math methods for different data
     println(RegressionMath.linear(dataDouble(data1)._1, dataDouble(data1)._2))
     println(RegressionMath.linear(dataDouble(data2)._1, dataDouble(data2)._2))
     println(RegressionMath.linear(dataDouble(data3)._1, dataDouble(data3)._2))
@@ -38,26 +40,25 @@ object RegressionTest {
 
     println("\nNext test coming up:\n\n")
 
-        inputTest.pairs.foreach(println)
-    //println(onlyPairs.take(5).toVector.map(_.toVector.map(_.toVector))) //test
+    inputTest.pairs.foreach(println) //testin for different data in fileInput
 
-        val dataX = inputTest.pairs.map(_._1)
-        val dataY = inputTest.pairs.map(_._2)
-    
-        println(RegressionMath.linear(dataX, dataY))
-    
-        val bestTestYet = new FileInput("data2.csv")
-        val deta = bestTestYet.pairs.map(_._1)
-        val detaY = bestTestYet.pairs.map(_._2)
-        println(RegressionMath.linear(deta, detaY))
-    
-        println("\nNext test coming up:\n\n")
+    val dataX = inputTest.pairs.map(_._1)
+    val dataY = inputTest.pairs.map(_._2)
+
+    println(RegressionMath.linear(dataX, dataY))
+
+    val bestTestYet = new FileInput("data2.csv")
+    val deta = bestTestYet.pairs.map(_._1)
+    val detaY = bestTestYet.pairs.map(_._2)
+    println(RegressionMath.linear(deta, detaY))
+
+    println("\nNext test coming up:\n\n")
 
     implicit val codec = Codec("UTF-8")
     codec.onMalformedInput(CodingErrorAction.REPLACE)
     codec.onUnmappableCharacter(CodingErrorAction.REPLACE)
 
-    val a = scala.io.Source.fromFile("Statfin.csv")
+    val a = scala.io.Source.fromFile("Statfin.csv") //testing scala source
     val b = a.getLines
     var n = 0
 
