@@ -210,7 +210,7 @@ object Plotting extends JFXApp {
         xAxis3.label = segLabelX //labels of the axis
         yAxis3.label = segLabelY
 
-        //shows messages to help the user which happen
+        //shows messages to help the user
         val messages = new Label("Some messages will appear here. Don't restart your program if you want your changes to stay")
         messages.layoutX = 150
         messages.layoutY = 15
@@ -218,7 +218,7 @@ object Plotting extends JFXApp {
         //insert the content into the window
         content = Array(menuBar, currentFile, messages, scatter, simpleRegression, segmentedRegression)
 
-        //For closing the program. Implements the action: (press the exit button => exit the progam). All these onActions are the functionalities of the buttons
+        //For closing the program. Implements the action: (press the exit button => exit the progam). All these onActions provide the functionalities of the buttons
         exit.onAction = (event: ActionEvent) => sys.exit(0)
 
         //for opening files. Implements the sequence of actions: (press the open button => choose a file => open the file)
@@ -440,5 +440,5 @@ object Plotting extends JFXApp {
       }
     }
   }
-  updateAll //update window. This only happens once, when the program is started
+  updateAll //update window. This code is only read once, when the program is started
 }
