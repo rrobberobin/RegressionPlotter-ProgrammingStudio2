@@ -19,7 +19,7 @@ object Plotting extends JFXApp {
 
   var delimiter = "," //comma is the default delimiter
 
-  var inputFile = new FileInput("data3.csv") //a demo file is processed
+  var inputFile = new FileInput("data3.csv") //a demo file is processed //data3.csv
 
   var dataPerLine = if (inputFile.pairs.size / 4 > 1) inputFile.pairs.size / 4 else 3 //More dataPerLine means less lines //cant be too many lines or can it?
 
@@ -107,7 +107,7 @@ object Plotting extends JFXApp {
   val movePlot = new MenuItem("Move a plot")
 
   //button for changing how many datapoints per line for the segmented regression plot.
-  val changeSegments = new MenuItem("Change segment")
+  val changeSegments = new MenuItem("Change segments")
 
   //A menu where we put some of the previously mentioned buttons and menus. We can have menus inside other menus
   val regressionMenu = new Menu("Regression")
@@ -141,29 +141,35 @@ object Plotting extends JFXApp {
     //The same line in array form.
     //The form of the line is: Array((starting x-coordinate, starting y-coordinate)(ending x-coordinate, ending y-coordinate))
     //Mathematically the line would be infinitely long, but we are restriciting the size according to the used data
-    val line = Array((dataX.head, xIsZeroAt), (dataX.last, xIsZeroAt + lineSlope * dataX.last))
+    var line = Array((dataX.head, xIsZeroAt), (dataX.last, xIsZeroAt + lineSlope * dataX.last))
+
+    if (lineSlope.isNaN || lineSlope.isInfinite) line = Array() // we don't want to plot a line that has slope NaN or infinite
 
     // the Segmented Regression lines. They are grouped together in an array where each positon in the array represent one line.
-    val grouped = restrictedPairs.sliding(dataPerLine, dataPerLine - 1).toArray // Won't work if dataPerLine is 1 or less
-
-    //change all arrays to list if there appears any problems
-    //the x-coordinate of the first and the last datapoint
-    val allX = grouped.map(g => (g.head._1, g.last._1))
+    val groups = restrictedPairs.sliding(dataPerLine, dataPerLine - 1).toArray // Won't work if dataPerLine is 1 or less
 
     // the slope of the Segmented Regression lines
-    val groupedSlope = grouped.map(g => RegressionMath.slope(g.map(_._1), g.map(_._2)))
+    val groupedSlope = groups.map(g => RegressionMath.slope(g.map(_._1), g.map(_._2)))
+
+    //we need to remove NaNs and infinites
+    val NaNs = groupedSlope.map(x => x.isNaN || x.isInfinite)
+    val groupedSlopeWithNoNaNs = (groupedSlope zip NaNs).filterNot(_._2).map(_._1)
+    val groupedWithNoNaNs = (groups zip NaNs).filterNot(_._2).map(_._1)
 
     //the y intersect of the same lines
-    val groupedZeroAt = grouped.map(g => RegressionMath.yIntersect(g.map(_._1), g.map(_._2)))
+    val groupedZeroAt = groupedWithNoNaNs.map(g => RegressionMath.yIntersect(g.map(_._1), g.map(_._2)))
+
+    //the x-coordinate of the first and the last datapoint
+    val allX = groupedWithNoNaNs.map(g => (g.head._1, g.last._1))
 
     //the y intersect, slopes and x-coordinates geouped together. This is done to easily trasnform the lines into array form
     val together = (groupedZeroAt zip groupedSlope) zip allX
 
     //the lines in array form. This is the same formula used as for the simple linear regression line
-    val groupedLines = together.map(g => Array((g._2._1, g._1._1 + g._1._2 * g._2._1), (g._2._2, g._1._1 + g._1._2 * g._2._2)))
+    var groupedLines = together.map(g => Array((g._2._1, g._1._1 + g._1._2 * g._2._1), (g._2._2, g._1._1 + g._1._2 * g._2._2)))
 
     //lines in string form
-    val groupedLineStrings = grouped.map(g => RegressionMath.linear(g.map(_._1), g.map(_._2)))
+    val groupedLineStrings = groupedWithNoNaNs.map(g => RegressionMath.linear(g.map(_._1), g.map(_._2)))
 
     //a window which pops up
     stage = new JFXApp.PrimaryStage {
@@ -237,6 +243,15 @@ object Plotting extends JFXApp {
                 segLabelX = inputFile.label(0)
                 segLabelY = inputFile.label(1)
               }
+
+              //reset ranges
+              xAxis = NumberAxis()
+              yAxis = NumberAxis()
+              xAxis2 = NumberAxis()
+              yAxis2 = NumberAxis()
+              xAxis3 = NumberAxis()
+              yAxis3 = NumberAxis()
+
               updateAll //update window
             } else messages.text = { //otherwise reports the error
               newFile.possibleError.get
@@ -292,7 +307,7 @@ object Plotting extends JFXApp {
                 else if (SegmentX.isSelected) segWidth = text.toDouble
                 else if (SegmentY.isSelected) segHeight = text.toDouble
                 updateAll //update window
-                
+
               } else if (inputFile.parseDouble(text) == None) messages.text = "The value you wrote is not a number"
 
             }
@@ -425,5 +440,5 @@ object Plotting extends JFXApp {
       }
     }
   }
-  updateAll   //update window. This only happens once, when the program is started
+  updateAll //update window. This only happens once, when the program is started
 }
