@@ -272,6 +272,19 @@ object Plotting extends JFXApp {
             if (text.nonEmpty) {
               delimiter = text
               inputFile = new FileInput(inputFile.file) //update file
+
+              //update labels
+              if (inputFile.label.size > 1) {
+                scatLabelX = inputFile.label(0)
+                scatLabelY = inputFile.label(1)
+                simpLabelX = inputFile.label(0)
+                simpLabelY = inputFile.label(1)
+                segLabelX = inputFile.label(0)
+                segLabelY = inputFile.label(1)
+              }
+
+              dataPerLine = if (inputFile.pairs.size / 4 > 1) inputFile.pairs.size / 4 else 3 //update dataPerLine
+
               updateAll //update file
             }
           }
