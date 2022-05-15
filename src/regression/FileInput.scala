@@ -41,7 +41,7 @@ class FileInput(var file: String) {
   //checks that the string can be evaluated as an integer
   def parseInt(s: String) = try { Some(s.toInt) } catch { case _: Throwable => None }
 
-  //handles csv and tsv files with different delimiters. Has some technical steps to remove unecessary data
+  //handles csv and tsv files with different delimiters. Has some technical steps to remove unnecessary data
   if (source.hasNext && Array("csv", "tsv", "txt").contains(filetype)) {
     val rows = source.getLines.filter(_.nonEmpty).toArray //turns the data into an Array. Each value in the array is an row in the data file
 

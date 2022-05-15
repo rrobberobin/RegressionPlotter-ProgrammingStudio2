@@ -99,7 +99,7 @@ object Plotting extends JFXApp {
   toggleMenu.items = Array(ScatterX, ScatterY, SimpleX, SimpleY, SegmentX, SegmentY)
 
   //buttons for changing labels and ranges of axes
-  val changeAxisRange = new MenuItem("Change range (and ticksize) of the chosen axis")
+  val changeAxisRange = new MenuItem("Change range (and tick size) of the chosen axis")
   val changeAxisLabel = new MenuItem("Change label of the chosen axis")
 
   //moving or changing sizes of the plots
@@ -113,7 +113,7 @@ object Plotting extends JFXApp {
   val regressionMenu = new Menu("Regression")
   regressionMenu.items = {
     Array(changeSegments, new SeparatorMenuItem, toggleMenu, new SeparatorMenuItem, changeAxisRange, changeAxisLabel, changeAxisSize, movePlot)
-  } // seperatorMenuItem separates different items with a line
+  } // separatorMenuItem separates different items with a line
 
   //a menu bar where we can put the menus. This will show up as a "bar", instead of freely floating menus.
   val menuBar = new MenuBar
@@ -140,12 +140,12 @@ object Plotting extends JFXApp {
 
     //The same line in array form.
     //The form of the line is: Array((starting x-coordinate, starting y-coordinate)(ending x-coordinate, ending y-coordinate))
-    //Mathematically the line would be infinitely long, but we are restriciting the size according to the used data
+    //Mathematically the line would be infinitely long, but we are restricting the size according to the used data
     var line = Array((dataX.head, xIsZeroAt), (dataX.last, xIsZeroAt + lineSlope * dataX.last))
 
     if (lineSlope.isNaN || lineSlope.isInfinite) line = Array() // we don't want to plot a line that has slope NaN or infinite
 
-    // the Segmented Regression lines. They are grouped together in an array where each positon in the array represent one line.
+    // the Segmented Regression lines. They are grouped together in an array where each position in the array represent one line.
     val groups = restrictedPairs.sliding(dataPerLine, dataPerLine - 1).toArray // Won't work if dataPerLine is 1 or less
 
     // the slope of the Segmented Regression lines
@@ -162,7 +162,7 @@ object Plotting extends JFXApp {
     //the x-coordinate of the first and the last datapoint
     val allX = groupedWithNoNaNs.map(g => (g.head._1, g.last._1))
 
-    //the y intersect, slopes and x-coordinates geouped together. This is done to easily trasnform the lines into array form
+    //the y intersect, slopes and x-coordinates grouped together. This is done to easily transform the lines into array form
     val together = (groupedZeroAt zip groupedSlope) zip allX
 
     //the lines in array form. This is the same formula used as for the simple linear regression line
@@ -218,7 +218,7 @@ object Plotting extends JFXApp {
         //insert the content into the window
         content = Array(menuBar, currentFile, messages, scatter, simpleRegression, segmentedRegression)
 
-        //For closing the program. Implements the action: (press the exit button => exit the progam). All these onActions provide the functionalities of the buttons
+        //For closing the program. Implements the action: (press the exit button => exit the program). All these onActions provide the functionalities of the buttons
         exit.onAction = (event: ActionEvent) => sys.exit(0)
 
         //for opening files. Implements the sequence of actions: (press the open button => choose a file => open the file)
@@ -263,7 +263,7 @@ object Plotting extends JFXApp {
         changeDelimiter.onAction = (event: ActionEvent) => {
           messages.text = "Change delimiter to suit the file you are using"
 
-          //adds texfield to window
+          //adds textfield to window
           content = Array(menuBar, currentFile, messages, scatter, simpleRegression, segmentedRegression, textField)
 
           // When you type in a value in the textfield and press enter, the delimiter is updated with typed value.
@@ -303,7 +303,7 @@ object Plotting extends JFXApp {
                 "Type a number value as the size. E.g. 500"
             }
 
-            //adds texfield to window
+            //adds textfield to window
             content = Array(menuBar, currentFile, messages, scatter, simpleRegression, segmentedRegression, textField)
 
             //type in the value in the textfield
@@ -333,7 +333,7 @@ object Plotting extends JFXApp {
           else {
             messages.text = "Move the selected plot. Write in the form: x-coordinate,y-coordinate. E.g. 200,100 You need to specify both"
 
-            //adds texfield to window
+            //adds textfield to window
             content = Array(menuBar, currentFile, messages, scatter, simpleRegression, segmentedRegression, textField)
 
             //type in the value in the textfield
@@ -366,16 +366,16 @@ object Plotting extends JFXApp {
           }
         }
 
-        //For changing the range and ticksize of an axis
+        //For changing the range and tick size of an axis
         changeAxisRange.onAction = (event: ActionEvent) => {
           if (plotToggle.getSelectedToggle == null) messages.text = "You haven't chosen an axis. Choose one first"
           else {
             messages.text = {
-              "Change range and ticksize of Axis. Write in the form: lowerBound,upperBound,tickSize " +
+              "Change range and tick size of Axis. Write in the form: lowerBound,upperBound,tickSize " +
                 "You need to specify all three: E.g. 10,100,10 Hit enter to confirm. Remember to check that you have the correct axis chosen"
             }
 
-            //adds texfield to window
+            //adds textfield to window
             content = Array(menuBar, currentFile, messages, scatter, simpleRegression, segmentedRegression, textField)
 
             //type in the value in the textfield
@@ -412,14 +412,14 @@ object Plotting extends JFXApp {
           else {
             messages.text = "Change label of axis. Hit enter to confirm. Remember to check that you have the correct axis chosen"
 
-            //adds texfield to window
+            //adds textfield to window
             content = Array(menuBar, currentFile, messages, scatter, simpleRegression, segmentedRegression, textField)
 
             //type in the value in the textfield
             textField.onAction = (event: ActionEvent) => {
               val text = textField.text.apply
 
-              //checking which radiobutton is selected and updatinh variables accordingly
+              //checking which radiobutton is selected and updating variables accordingly
               if (ScatterX.isSelected) scatLabelX = text
               else if (ScatterY.isSelected) scatLabelY = text
               else if (SimpleX.isSelected) simpLabelX = text
@@ -436,13 +436,13 @@ object Plotting extends JFXApp {
         changeSegments.onAction = (event: ActionEvent) => {
           messages.text = "Change how many datapoints you want per segment. Hit enter to confirm"
 
-          //adds texfield to window
+          //adds textfield to window
           content = Array(menuBar, currentFile, messages, scatter, simpleRegression, segmentedRegression, textField)
 
           //type in the value in the textfield
           textField.onAction = (event: ActionEvent) => {
             val text = textField.text.apply
-            if (inputFile.parseInt(text) != None) { //checks that the input can be evaluted as an integer
+            if (inputFile.parseInt(text) != None) { //checks that the input can be evaluated as an integer
               if (text.toInt > inputFile.pairs.size / 11) { //the value can't be too small or there would be performance issues
                 dataPerLine = text.toInt
                 updateAll

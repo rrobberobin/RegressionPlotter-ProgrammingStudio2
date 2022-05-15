@@ -40,7 +40,7 @@ object RegressionTest {
 
     println("\nNext test coming up:\n\n")
 
-    inputTest.pairs.foreach(println) //testin for different data in fileInput
+    inputTest.pairs.foreach(println) //testing for different data in fileInput
 
     val dataX = inputTest.pairs.map(_._1)
     val dataY = inputTest.pairs.map(_._2)
