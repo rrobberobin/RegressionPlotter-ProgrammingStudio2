@@ -19,7 +19,7 @@ object Plotting extends JFXApp {
 
   var delimiter = "," //comma is the default delimiter
 
-  var inputFile = new FileInput("data3.csv") //a demo file is processed //data3.csv
+  var inputFile = new FileInput("testFiles\\data3.csv") //a demo file is processed //data3.csv
 
   var dataPerLine = if (inputFile.pairs.size / 4 > 1) inputFile.pairs.size / 4 else 3 //More dataPerLine means less lines //cant be too many lines or can it?
 

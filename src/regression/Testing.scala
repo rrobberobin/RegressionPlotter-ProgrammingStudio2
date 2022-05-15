@@ -24,9 +24,9 @@ object RegressionTest {
   Plotting.delimiter = "."
 
   //test for the fileInput class. Later, I had to change these tests, so that they would still work
-  val inputTest = new FileInput("data.csv")
-  val inputTest2 = new FileInput("data2.csv")
-  val inputTest3 = new FileInput("data3.csv")
+  val inputTest = new FileInput("testFiles\\data.csv")
+  val inputTest2 = new FileInput("testFiles\\data2.csv")
+  val inputTest3 = new FileInput("testFiles\\data3.csv")
 
   //The testing in form of a main method
   def main(args: Array[String]): Unit = {
@@ -47,7 +47,7 @@ object RegressionTest {
 
     println(RegressionMath.linear(dataX, dataY))
 
-    val bestTestYet = new FileInput("data2.csv")
+    val bestTestYet = new FileInput("testFiles\\data2.csv")
     val deta = bestTestYet.pairs.map(_._1)
     val detaY = bestTestYet.pairs.map(_._2)
     println(RegressionMath.linear(deta, detaY))
@@ -58,7 +58,7 @@ object RegressionTest {
     codec.onMalformedInput(CodingErrorAction.REPLACE)
     codec.onUnmappableCharacter(CodingErrorAction.REPLACE)
 
-    val a = scala.io.Source.fromFile("Statfin.csv") //testing scala source
+    val a = scala.io.Source.fromFile("testFiles\\Statfin.csv") //testing scala source
     val b = a.getLines
     var n = 0
 
