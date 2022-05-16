@@ -1,8 +1,0 @@
-Progress
-
-All plotting functions work now. Bascially my plotting app works. They can be used by running the plotting object
-
-Got a lot done this week. Almost all of my time has been used to work on this project. 
-Finally now when I've got one course less, I can spend some time on this.
-
-Workload ~100 hours
